@@ -99,29 +99,10 @@ The implementation of the project utilizes the following tools and libraries:
 
 ### Installation
 
-All the above packages are listed in the `requirements.txt` file. To install them, simply execute the following command:
 
-```sh
-$ pip install -r requirements.txt
-```
 
-By installing the listed packages, you can ensure that all necessary dependencies are met for running the project smoothly.
 
-## Usage
 
-### Running Manually
-
-To execute the file manually, use the following command:
-
-```sh
-$ python3 train.py -wp <wandb_project_name> -we <wandb_entity_name>
-```
-
-You can also modify the following list of available options along with brief information about each:
-
-```sh
-$ python3 train.py -h
-```
 
 #### Options
 
@@ -151,12 +132,7 @@ These options provide a comprehensive set of configurations to customize the neu
 
 ### Running a Sweep using Wandb
 
-To conduct a sweep using wandb, set the values of count and project name in `src/Q4.py`, then execute the following command:
 
-```sh
-$ python3 src/Q4.py
-```
 
 ### Customization
-Refer to the `src/train_example.py` for training code. The `notebooks` folder has all the jupyter notebooks enlisting the different trails and base code for this implmentation. 
-</div>
+
