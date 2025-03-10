@@ -147,9 +147,13 @@ The training scripts are highly configurable via command-line arguments. Options
 The project uses a `requirements.txt` file to manage dependencies. The following packages (with specified versions) are required:
 
 wandb==0.16.4
+
 scikit-learn==0.24.2
+
 numpy==1.21.0
+
 matplotlib==3.4.2
+
 keras==2.7.0
 
 ## Installation:
