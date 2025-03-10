@@ -159,8 +159,9 @@ git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
 
 ### Create a Virtual Environment (Optional but Recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+```bash python -m venv venv source venv/bin/activate  ```
+#### On Windows use: 
+``` bash venv\Scripts\activate```
 
 ### Install the Dependencies
 pip install -r requirements.txt
