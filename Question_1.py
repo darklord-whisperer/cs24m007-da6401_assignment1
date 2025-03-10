@@ -40,7 +40,7 @@ class FashionMNISTVisualizer:
         """
         Logs the figure (which contains all 10 images) to Weights & Biases.
         """
-        wandb.init(project="Alik_Final_DA6401_DeepLearing_Assignment1",
+        wandb.init(project="Alik_Final_DA6401_DeepLearning_Assignment1",
                    name="Question_1_Fashion_MNIST_Grid_Visualization")
 
         # Log the stored figure as a WandB image
