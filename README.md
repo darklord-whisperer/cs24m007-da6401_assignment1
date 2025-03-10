@@ -155,16 +155,26 @@ keras==2.7.0
 ## Installation:
 
 ### Clone the Repository
+```bash
 git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
+```
 
 ### Create a Virtual Environment (Optional but Recommended)
-```bash python -m venv venv source venv/bin/activate  ```
+```bash 
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+```
+
 #### On Windows use: 
-``` bash venv\Scripts\activate```
+``` bash 
+venv\Scripts\activate
+```
 
 ### Install the Dependencies
-``` bash pip install -r requirements.txt```
+``` bash 
+pip install -r requirements.txt
+```
 
 ## Usage
 ### Running Manually
