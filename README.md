@@ -164,7 +164,7 @@ cd your-repo-name
 ``` bash venv\Scripts\activate```
 
 ### Install the Dependencies
-pip install -r requirements.txt
+``` bash pip install -r requirements.txt```
 
 ## Usage
 ### Running Manually
