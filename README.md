@@ -2,137 +2,153 @@
 
 # DA6410 Fundamentals of Deep Learning - Assignment 1
 
-This repository contains all files for the first assignment of the Da6410 - Fundamentals of Deep Learning course at IIT Madras.
+This repository contains all files for the first assignment of the DA6410 - Fundamentals of Deep Learning course at IIT Madras. The assignment involves building a FeedForward Neural Network (FFNN) from scratch with backpropagation, implementing multiple optimizers, and performing hyperparameter sweeps and visualizations using Weights & Biases (WandB).
 
 ## Contents
 
-* [Task](#task)
-* [Submission](#submission)
-* [Dataset](#dataset)
-* [Implementation Details](#implementation-details)
+- [Task](#task)
+- [Submission](#submission)
+- [Dataset](#dataset)
+- [Implementation Details](#implementation-details)
   - [Structure](#structure)
   - [Optimizers](#optimizers)
   - [Criterion](#criterion)
   - [Backpropagation](#backpropagation)
   - [Flexibility](#flexibility)
-* [Tools and Libraries Used](#tools-and-libraries-used)
+- [Tools and Libraries Used](#tools-and-libraries-used)
   - [Packages Used](#packages-used)
-  - [Installation](#installation)
-* [Usage](#usage)
-  - [Running Manually](#running-manuallyn)
-  - [Running a Sweep using Wandb](#running-a-sweep-using-wandb)
+  - [Requirements and Installation](#requirements-and-installation)
+- [Usage](#usage)
+  - [Running Manually](#running-manually)
+  - [Running a Sweep using WandB](#running-a-sweep-using-wandb)
   - [Customization](#customization)
 
 ## Task
 
-The task involves implementing a FeedForward Neural Network with Backpropagation from scratch.
+The primary task is to implement a FeedForward Neural Network (FFNN) from scratch with the following capabilities:
+- **Forward and Backward Propagation:** Custom implementation with gradient clipping and learning rate decay.
+- **Activation Functions:** Multiple activations (Sigmoid, ReLU, Softmax) and their derivatives.
+- **Optimizers:** Support for SGD, Momentum, NAG, RMSProp, Adam, and Nadam.
+- **Loss Functions:** Both Cross Entropy and Mean Squared Error (MSE) losses.
+- **Hyperparameter Tuning:** Ability to run experiments and sweeps using WandB.
+- **Visualization:** Tools to visualize sample images from Fashion MNIST and interactive confusion matrices.
 
 ## Submission
 
-My WandB project: 
-My WandB report: 
+- **WandB Project:** [Your WandB Project Link]
+- **WandB Report:** [Your WandB Report Link]
+
 ## Dataset
 
-The dataset utilized for this assignment comprises Fashion MNIST and MNIST, both available in the `keras.datasets` module and can be imported directly into the 
-```python
-from keras.datasets import fashion_mnist
-from keras.datasets import mnist
-```
+The assignment uses two popular datasets from the `keras.datasets` module:
+- **Fashion MNIST:** Loaded using `from keras.datasets import fashion_mnist`
+- **MNIST:** Loaded using `from keras.datasets import mnist`
+
+The datasets are normalized (pixel values scaled to [0, 1]) and the training data is split into training, validation, and test sets (commonly an 80/10/10 split).
 
 ## Implementation Details
 
-In this section, we delve into the implementation of the feedforward network and backpropagation, detailing the structure and functionalities of each component.
-
 ### Structure
 
-The implementation comprises four main files located under the `src/ann` directory:
+The repository is organized into several modules, each addressing a specific functionality:
 
+- **ActivationFunctions.py:**  
+  Defines the `Activations` class which provides:
+  - `sigmoid`: Implements the sigmoid activation.
+  - `g3`: Implements the ReLU activation (returns `max(a, 0)`).
+  - `SoftMax`: Implements the softmax function to produce a probability distribution.
 
+- **ArithmeticFunctions.py:**  
+  Contains the `Arithmetic` class with methods to perform matrix arithmetic required for parameter updates:
+  - `Add`: Matrix addition.
+  - `Subtract`: Standard parameter update.
+  - `RMSpropSubtract` & `AdamSubtract`: Optimizer-specific update rules.
+
+- **DifferentialFunctions.py:**  
+  Implements the `Differential` class for computing derivatives:
+  - `sig_dif`: Derivative of the sigmoid function.
+  - `tan_dif`: Derivative of the tanh function.
+  - `Rel_dif`: Derivative of the ReLU function.
+  - `Iden_dif`: Derivative of the identity function.
+
+- **Question_1.py:**  
+  Contains the `FashionMNISTVisualizer` class which:
+  - Loads the Fashion MNIST dataset.
+  - Plots a grid of one sample image per class.
+  - Logs the generated figure to WandB.
+
+- **train_better_accuracy_test_cross_entropy.py:**  
+  Implements the training pipeline for the FFNN using the cross-entropy loss function. It includes:
+  - Command-line argument parsing for hyperparameter configuration.
+  - Data loading with an 80/10/10 train/validation/test split.
+  - Initialization of network weights (with Xavier or random initialization).
+  - Forward and backward passes with gradient clipping.
+  - Dynamic optimizer updates supporting SGD, Momentum, NAG, RMSProp, Adam, and Nadam.
+  - Logging of performance metrics and both standard and interactive confusion matrices to WandB.
+  - Support for hyperparameter sweeps.
+
+- **train_better_accuracy_test_mse.py:**  
+  Similar to the cross-entropy version, this script trains the FFNN using Mean Squared Error (MSE) as the loss function.
 
 ### Optimizers
 
-The implemented optimizers offer a range of options to facilitate efficient gradient descent:
-
+The following optimizers are implemented:
 - **SGD (Stochastic Gradient Descent)**
-- **Momentum (Momentum SGD)**
-- **NAG (Nesterov Accelerated Gradient - optimized version)**
+- **Momentum**
+- **NAG (Nesterov Accelerated Gradient)**
 - **RMSProp (Root Mean Square Propagation)**
 - **Adam (Adaptive Moment Estimation)**
 - **Nadam (Nesterov Adaptive Moment Estimation)**
 
 ### Criterion
 
-Implemented loss functions cater to various optimization needs:
-
-- **Cross Entropy**
-- **Mean Squared Error**
+Two loss functions are provided:
+- **Cross Entropy:** Ideal for classification tasks.
+- **Mean Squared Error (MSE):** An alternative for regression-style outputs.
 
 ### Backpropagation
 
-
+Key features include:
+- **Forward Pass:** Computes activations for each layer using the selected activation function.
+- **Backward Pass:** Uses the chain rule to compute gradients and updates weights accordingly.
+- **Gradient Clipping:** Applied to mitigate exploding gradients.
+- **Learning Rate Decay:** Dynamically adjusts the learning rate after each epoch.
 
 ### Flexibility
 
-
-
-
+The training scripts are highly configurable via command-line arguments. Options include:
+- Choosing the dataset (`fashion_mnist` or `mnist`).
+- Selecting the loss function (`cross_entropy` or `mean_squared_error`).
+- Configuring the optimizer and its associated hyperparameters.
+- Setting the number of epochs, batch size, number of layers, hidden layer size, and activation function.
+- Running a single training run or a hyperparameter sweep via WandB.
 
 ## Tools and Libraries Used
 
-The implementation of the project utilizes the following tools and libraries:
-
-- **Python 3.10.1**: The core programming language used for implementing all aspects of the project.
-
-- **WandB (Weights and Biases)**: WandB is utilized for running experiments, hyperparameter tuning, visualization, and more.
+- **Python 3.10.1** (or higher)
+- **Numpy:** For numerical computations.
+- **Matplotlib:** For plotting and visualization.
+- **Keras:** For loading the MNIST and Fashion MNIST datasets.
+- **Scikit-learn:** For data preprocessing and confusion matrix computations.
+- **WandB (Weights & Biases):** For experiment tracking, hyperparameter tuning, and logging.
+- **Plotly:** For interactive visualization of confusion matrices.
 
 ### Packages Used
 
-1. **Numpy 1.21.0**: Used to implement the neural layer and perform computations
+1. **Numpy**
+2. **Matplotlib**
+3. **Keras**
+4. **WandB**
+5. **Scikit-learn**
+6. **Plotly**
 
-2. **Matplotlib 3.4.2**: Used for plotting graphs, histograms, and other statistical visualizations.
+### Requirements and Installation
 
-3. **Keras 2.7.0**: Used for loading datasets.
+The project uses a `requirements.txt` file to manage dependencies. The following packages (with specified versions) are required:
 
-4. **WandB 0.16.4**
-
-5. **Scikit-learn 0.24.2**: Used for plotting confusion matrices and splitting data.
-
-### Installation
-
-
-
-
-
-
-#### Options
-
-| Option                           | Description                                                                                 |
-|----------------------------------|---------------------------------------------------------------------------------------------|
-| `-h, --help`                     | Display help message and exit                                                              |
-| `-wp WANDB_PROJECT`              | Wandb project name                                                                          |
-| `-we WANDB_ENTITY`               | Wandb entity name                                                                           |
-| `-d DATASET`                     | Dataset to use (`fashion_mnist` or `mnist`)                                                 |
-| `-e EPOCHS`                      | Number of epochs                                                                            |
-| `-b BATCH_SIZE`                  | Batch size                                                                                  |
-| `-l LOSS`                        | Loss function (`cross_entropy` or `mean_squared_error`)                                      |
-| `-o OPTIMIZER`                   | Optimizer to use (`sgd`, `momentum`, `nag`, `rmsprop`, `adam`, `nadam`)                     |
-| `-lr LEARNING_RATE`              | Learning rate                                                                               |
-| `-m MOMENTUM`                    | Momentum for Momentum and NAG                                                               |
-| `-beta BETA`                     | Beta for RMSProp                                                                            |
-| `-beta1 BETA1`                   | Beta1 for Adam and Nadam                                                                    |
-| `-beta2 BETA2`                   | Beta2 for Adam and Nadam                                                                    |
-| `-eps EPSILON`                   | Epsilon for Adam and Nadam                                                                  |
-| `-w_d WEIGHT_DECAY`              | Weight decay                                                                                |
-| `-w_i WEIGHT_INIT`               | Weight initialization (`random` or `xavier`)                                                |
-| `-nhl NUM_LAYERS`                | Number of hidden layers                                                                     |
-| `-sz HIDDEN_SIZE`                | Hidden size                                                                                 |
-| `-a ACTIVATION`                  | Activation function (`sigmoid`, `tanh`, `relu`)                                              |
-
-These options provide a comprehensive set of configurations to customize the neural network model and the training process according to specific requirements and experimentation needs.
-
-### Running a Sweep using Wandb
-
-
-
-### Customization
-
+```plaintext
+wandb==0.16.4
+scikit-learn==0.24.2
+numpy==1.21.0
+matplotlib==3.4.2
+keras==2.7.0
