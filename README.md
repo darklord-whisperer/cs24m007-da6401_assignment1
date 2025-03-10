@@ -146,9 +146,129 @@ The training scripts are highly configurable via command-line arguments. Options
 
 The project uses a `requirements.txt` file to manage dependencies. The following packages (with specified versions) are required:
 
-```plaintext
 wandb==0.16.4
 scikit-learn==0.24.2
 numpy==1.21.0
 matplotlib==3.4.2
 keras==2.7.0
+
+## Installation:
+
+### Clone the Repository
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
+
+### Create a Virtual Environment (Optional but Recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+### Install the Dependencies
+pip install -r requirements.txt
+
+## Usage
+### Running Manually
+#### Cross-Entropy Loss Version:
+
+```bash
+python train_better_accuracy_test_cross_entropy.py \
+    --wandb_project Your_Project_Name \
+    --wandb_entity Your_Entity_Name \
+    --dataset fashion_mnist \
+    --epochs 10 \
+    --batch_size 64 \
+    --loss cross_entropy \
+    --optimizer adam \
+    --learning_rate 0.001 \
+    --momentum 0.9 \
+    --beta 0.9 \
+    --beta1 0.9 \
+    --beta2 0.999 \
+    --epsilon 1e-8 \
+    --weight_decay 0.0005 \
+    --weight_init xavier \
+    --num_layers 2 \
+    --hidden_size 128 \
+    --activation ReLU
+```
+
+### MSE Loss Version :
+
+  ```bash
+  python train_better_accuracy_test_mse.py \
+    --wandb_project Your_Project_Name \
+    --wandb_entity Your_Entity_Name \
+    --dataset fashion_mnist \
+    --epochs 5 \
+    --batch_size 32 \
+    --loss mean_squared_error \
+    --optimizer sgd \
+    --learning_rate 0.1 \
+    --momentum 0.5 \
+    --beta 0.5 \
+    --beta1 0.5 \
+    --beta2 0.5 \
+    --epsilon 1e-6 \
+    --weight_decay 0 \
+    --weight_init random \
+    --num_layers 1 \
+    --hidden_size 4 \
+    --activation sigmoid
+```
+
+## Running a Sweep using WandB
+
+  ```bash
+  python train_better_accuracy_test_cross_entropy.py --sweep \
+    --wandb_project Your_Project_Name \
+    --wandb_entity Your_Entity_Name
+```
+
+Or for the MSE version:
+
+```bash
+python train_better_accuracy_test_mse.py --sweep \
+    --wandb_project Your_Project_Name \
+    --wandb_entity Your_Entity_Name
+```
+
+## Customization
+The following command-line options allow you to customize the training process:
+
+| Option            | Description |
+|-------------------|-------------|
+| `-h`, `--help`     | Display help message and exit |
+| `-wp`, `--wandb_project` | WandB project name |
+| `-we`, `--wandb_entity`  | WandB entity name |
+| `-d`, `--dataset`        | Dataset to use (`fashion_mnist` or `mnist`) |
+| `-e`, `--epochs`         | Number of epochs |
+| `-b`, `--batch_size`     | Batch size |
+| `-l`, `--loss`           | Loss function (`cross_entropy` or `mean_squared_error`) |
+| `-o`, `--optimizer`      | Optimizer to use (`sgd`, `momentum`, `nag`, `rmsprop`, `adam`, `nadam`) |
+| `-lr`, `--learning_rate` | Learning rate |
+| `-m`, `--momentum`       | Momentum value for Momentum and NAG optimizers |
+| `--beta`                 | Beta value for RMSProp |
+| `--beta1`                | Beta1 for Adam/Nadam |
+| `--beta2`                | Beta2 for Adam/Nadam |
+| `-eps`, `--epsilon`      | Epsilon value for Adam/Nadam |
+| `-w_d`, `--weight_decay` | Weight decay |
+| `-w_i`, `--weight_init`  | Weight initialization method (`random` or `xavier`) |
+| `-nhl`, `--num_layers`   | Number of hidden layers |
+| `-sz`, `--hidden_size`   | Size (number of neurons) for each hidden layer |
+| `-a`, `--activation`     | Activation function (`sigmoid`, `tanh`, `relu`, `identity`) |
+| `--sweep`                | Run a hyperparameter sweep instead of a single training run |
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
