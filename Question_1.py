@@ -5,20 +5,25 @@ import matplotlib.pyplot as plt
 
 class FashionMNISTVisualizer:
     def __init__(self):
-        self.class_labels = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+        self.class_labels = [
+            'T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+            'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'
+        ]
         self.train_images, self.train_labels = None, None
+        self.fig = None  # We'll store the figure here
 
     def load_data(self):
         (self.train_images, self.train_labels), (_, _) = fashion_mnist.load_data()
         
     def plot_sample_images(self):
-        plt.figure(figsize=(12, 8))
+        """
+        Creates a single figure with 10 subplots (one for each class).
+        """
+        self.fig = plt.figure(figsize=(12, 8))
 
-        # Iterate through each class to plot a sample image for each
         for class_idx in range(len(self.class_labels)):
             # Find the first occurrence of an image with the current label
             first_index = np.where(self.train_labels == class_idx)[0][0]
-
             sample_image = self.train_images[first_index]
             label = self.class_labels[self.train_labels[first_index]]
 
@@ -27,24 +32,35 @@ class FashionMNISTVisualizer:
             plt.title(label)
             plt.axis('off')
 
-        plt.show()
+        plt.tight_layout()
+        # Optionally, you can show the figure locally (comment out if running in a headless environment):
+        # plt.show()
 
     def log_images_to_wandb(self):
-        wandb.init(project="Alik_Final_DA6401_1_DeepLearing_Assignment1", name="Quuestion_1_Fashion_MNIST_Grid_Visualization")
-        wandb.log({"Fashion_MNIST_Sample_Images": wandb.Image(plt)})
+        """
+        Logs the figure (which contains all 10 images) to Weights & Biases.
+        """
+        wandb.init(project="Alik_Final_DA6401_DeepLearing_Assignment1",
+                   name="Question_1_Fashion_MNIST_Grid_Visualization")
+
+        # Log the stored figure as a WandB image
+        # Using wandb.Image(self.fig) ensures the entire figure is logged.
+        wandb.log({"Fashion_MNIST_Sample_Images": wandb.Image(self.fig)})
         
         wandb.finish()
 
 
 def main():
-    # Initializing visualizer class
+    # Initialize the visualizer
     visualizer = FashionMNISTVisualizer()
     
-    # Loading dataset
+    # Load the Fashion-MNIST dataset
     visualizer.load_data()
 
+    # Create the figure with sample images
     visualizer.plot_sample_images()
 
+    # Log the figure to Weights & Biases
     visualizer.log_images_to_wandb()
 
 if __name__ == "__main__":
