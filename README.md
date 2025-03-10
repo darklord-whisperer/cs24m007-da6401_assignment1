@@ -1,6 +1,6 @@
 <div style="text-align: justify;">
 
-# DA6410 Fundamentals of Deep Learning - Assignment 1
+# DA6410 : Fundamentals of Deep Learning - Assignment 1
 
 This repository contains all files for the first assignment of the DA6410 - Fundamentals of Deep Learning course at IIT Madras. The assignment involves building a FeedForward Neural Network (FFNN) from scratch with backpropagation, implementing multiple optimizers, and performing hyperparameter sweeps and visualizations using Weights & Biases (WandB).
 
