@@ -36,7 +36,7 @@ The primary task is to implement a FeedForward Neural Network (FFNN) from scratc
 ## Submission
 
 - **WandB Project:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/
-- **WandB Report:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/reports/DA-6401-Assignment-1-by-CS24M007
+- **WandB Report:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/reports/DA-6401-Assignment-1-by-CS24M007-Alik-Sarkar--VmlldzoxMTcxOTUzMA?accessToken=ghybipxdmdstcq2fi5wfi6tmmqubmweohe19zyqej9k6mkx3wu9a4slrraoc9twr
 
 ## Dataset
 
@@ -46,49 +46,29 @@ The assignment uses two popular datasets from the `keras.datasets` module:
 
 The datasets are normalized (pixel values scaled to [0, 1]) and the training data is split into training, validation, and test sets (commonly an 80/10/10 split).
 
-## Implementation Details
-
 ### Structure
 
-The repository is organized into several modules, each addressing a specific functionality:
+The repository is organized into two main modules, each addressing a specific functionality:
 
-- **ActivationFunctions.py:**  
-  Defines the `Activations` class which provides:
-  - `sigmoid`: Implements the sigmoid activation.
-  - `g3`: Implements the ReLU activation (returns `max(a, 0)`).
-  - `SoftMax`: Implements the softmax function to produce a probability distribution.
+**train.py**:
+The central training script that manages:
 
-- **ArithmeticFunctions.py:**  
-  Contains the `Arithmetic` class with methods to perform matrix arithmetic required for parameter updates:
-  - `Add`: Matrix addition.
-  - `Subtract`: Standard parameter update.
-  - `RMSpropSubtract` & `AdamSubtract`: Optimizer-specific update rules.
+  - Command-line argument parsing for hyperparameter configuration.
+  - Data loading with an 80/10/10 train/validation/test split.
+  - Initialization of network weights (using Xavier or random initialization).
+  - Forward and backward passes with gradient clipping.
+  - Dynamic optimizer updates (all optimizers are imported from optimizer_functions.py).
+  - Logging of performance metrics and both standard and interactive confusion matrices to WandB.
+  - Hyperparameter sweeps support via WandB
 
-- **DifferentialFunctions.py:**  
-  Implements the `Differential` class for computing derivatives:
-  - `sig_dif`: Derivative of the sigmoid function.
-  - `tan_dif`: Derivative of the tanh function.
-  - `Rel_dif`: Derivative of the ReLU function.
-  - `Iden_dif`: Derivative of the identity function.
+**optimizer_functions.py**:
+  - Contains the implementation of various optimizer wrappers. All functions adhere to a unified interface, making it easy to add new optimization algorithms. The file also maintains a g lobal OPTIMIZERS dictionary for easy mapping between optimizer names and their implementations.
 
-- **Question_1.py:**  
+**Question_1.py:**  
   Contains the `FashionMNISTVisualizer` class which:
   - Loads the Fashion MNIST dataset.
   - Plots a grid of one sample image per class.
   - Logs the generated figure to WandB.
-
-- **train_better_accuracy_test_cross_entropy.py:**  
-  Implements the training pipeline for the FFNN using the cross-entropy loss function. It includes:
-  - Command-line argument parsing for hyperparameter configuration.
-  - Data loading with an 80/10/10 train/validation/test split.
-  - Initialization of network weights (with Xavier or random initialization).
-  - Forward and backward passes with gradient clipping.
-  - Dynamic optimizer updates supporting SGD, Momentum, NAG, RMSProp, Adam, and Nadam.
-  - Logging of performance metrics and both standard and interactive confusion matrices to WandB.
-  - Support for hyperparameter sweeps.
-
-- **train_better_accuracy_test_mse.py:**  
-  Similar to the cross-entropy version, this script trains the FFNN using Mean Squared Error (MSE) as the loss function.
 
 ### Optimizers
 
@@ -103,7 +83,7 @@ The following optimizers are implemented:
 ### Criterion
 
 Two loss functions are provided:
-- **Cross Entropy:** Ideal for classification tasks.
+- **Cross Entropy(CE):** Ideal for classification tasks.
 - **Mean Squared Error (MSE):** An alternative for regression-style outputs.
 
 ### Backpropagation
@@ -164,16 +144,6 @@ git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
 ```
 
-### Create a Virtual Environment (Optional but Recommended)
-```bash 
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
-
-#### On Windows use: 
-``` bash 
-venv\Scripts\activate
-```
 
 ### Install the Dependencies
 ``` bash 
@@ -182,68 +152,18 @@ pip install -r requirements.txt
 
 ## Usage
 ### Running Manually
-#### Cross-Entropy Loss Version:
 
 ```bash
-python train_better_accuracy_test_cross_entropy.py \
-    --wandb_project Your_Project_Name \
-    --wandb_entity Your_Entity_Name \
-    --dataset fashion_mnist \
-    --epochs 10 \
-    --batch_size 64 \
-    --loss cross_entropy \
-    --optimizer adam \
-    --learning_rate 0.001 \
-    --momentum 0.9 \
-    --beta 0.9 \
-    --beta1 0.9 \
-    --beta2 0.999 \
-    --epsilon 1e-8 \
-    --weight_decay 0.0005 \
-    --weight_init xavier \
-    --num_layers 2 \
-    --hidden_size 128 \
-    --activation ReLU
+python train.py --wandb_project Your_Project_Name --wandb_entity Your_Entity_Name
 ```
 
-### MSE Loss Version :
+#### Cross-Entropy Loss Version:
 
-  ```bash
-  python train_better_accuracy_test_mse.py \
-    --wandb_project Your_Project_Name \
-    --wandb_entity Your_Entity_Name \
-    --dataset fashion_mnist \
-    --epochs 5 \
-    --batch_size 32 \
-    --loss mean_squared_error \
-    --optimizer sgd \
-    --learning_rate 0.1 \
-    --momentum 0.5 \
-    --beta 0.5 \
-    --beta1 0.5 \
-    --beta2 0.5 \
-    --epsilon 1e-6 \
-    --weight_decay 0 \
-    --weight_init random \
-    --num_layers 1 \
-    --hidden_size 4 \
-    --activation sigmoid
-```
 
 ## Running a Sweep using WandB
 
   ```bash
-  python train_better_accuracy_test_cross_entropy.py --sweep \
-    --wandb_project Your_Project_Name \
-    --wandb_entity Your_Entity_Name
-```
-
-Or for the MSE version:
-
-```bash
-python train_better_accuracy_test_mse.py --sweep \
-    --wandb_project Your_Project_Name \
-    --wandb_entity Your_Entity_Name
+  python train.py --sweep --wandb_project Your_Project_Name --wandb_entity Your_Entity_Name
 ```
 
 ## Customization
@@ -273,8 +193,45 @@ The following command-line options allow you to customize the training process:
 | `--sweep`                | Run a hyperparameter sweep instead of a single training run |
 
   
+```bash
+python train.py \
+    --wandb_project Your_Project_Name \
+    --wandb_entity Your_Entity_Name \
+    --dataset fashion_mnist \
+    --epochs 10 \
+    --batch_size 64 \
+    --loss cross_entropy \
+    --optimizer adam \
+    --learning_rate 0.001 \
+    --momentum 0.9 \
+    --beta 0.9 \
+    --beta1 0.9 \
+    --beta2 0.999 \
+    --epsilon 1e-8 \
+    --weight_decay 0.0005 \
+    --weight_init Xavier \
+    --num_layers 2 \
+    --hidden_size 128 \
+    --activation ReLU
+```
+## Customization for Optimization function
 
+If you wish to add a new optimization algorithm, you can do so easily in optimizer_functions.py. A new function is already created for the user to add their own optimizer function. This is extremely flexible and easy to use – you only need to add your logic in Python and place it in the function body shown below:
 
+```python
+def customized_user_optimizer(name, func):
+    """
+    Registers a new optimizer wrapper function.
+    
+    Parameters:
+      - name: (str) the name of the optimizer
+      - func: a function with the unified interface: 
+              (w, b, state) = func(w, b, grads_w, grads_b, state, args)
+    """
+    OPTIMIZERS[name.lower()] = func
+```
+
+All optimizer functions adhere to a unified interface, meaning they all take the same arguments. This approach avoids having different parameter sets or function signatures for each optimizer and minimizes changes needed in the training loop. The mapping complexities are inherently handled by the train.py script, which maintains a global OPTIMIZERS dictionary to keep track of all implemented optimizer functions.
 
 
 
