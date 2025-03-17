@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 """
-Vectorized FFNN training script.
-
-Maintains:
- • Same dataset splits (80/10/10)
- • Same epochs and sweep configuration
- • Batch-wise forward/backward propagation for efficiency
- • Row-wise percentage and absolute counts in the creative confusion matrix
-
-Hyperparameters remain unchanged.
+Feedforward neural network implementation with backpropagation algorithm without optimizer function implementation for better user friendly inclusion for customized optimization algorithm
 """
 
 import argparse
@@ -21,9 +13,8 @@ from sklearn.metrics import confusion_matrix
 import plotly.graph_objects as go
 from optimizer_functions import update_weights  # Importing the optimizer functions
 
-# =========================================================
-# 1. Argument Parsing
-# =========================================================
+# Argument Parsing
+
 def parse_args():
     parser = argparse.ArgumentParser(description="FeedForward Neural Network with backpropagation from scratch")
     parser.add_argument("-wp", "--wandb_project", type=str, default="Alik_Final_DA6401_DeepLearning_Assignment1",
@@ -72,9 +63,8 @@ def parse_args():
     return parser.parse_args()
 
 
-# =========================================================
-# 2. Data Loading and Splitting (80/10/10)
-# =========================================================
+# Data Loading and Splitting (80/10/10)
+
 def load_data(dataset):
     if dataset == "fashion_mnist":
         (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
@@ -89,9 +79,8 @@ def load_data(dataset):
     val_end = train_end + int(0.1 * total)
     return (X_all[:train_end], y_all[:train_end]), (X_all[train_end:val_end], y_all[train_end:val_end]), (X_all[val_end:], y_all[val_end:])
 
-# =========================================================
-# 3. Weight Initialization
-# =========================================================
+# Weight Initialization
+
 def xavier_init(fan_in, fan_out):
     return np.random.normal(0.0, np.sqrt(2/(fan_in+fan_out)), (fan_out, fan_in))
 
@@ -108,9 +97,8 @@ def init_weights(n_inputs, n_hidden_layers, hidden_size, n_outputs, init_mode="r
         biases.append(b)
     return weights, biases
 
-# =========================================================
-# 4. Activation Functions and Softmax
-# =========================================================
+# Activation Functions and Softmax
+
 def activation_forward(z, activation):
     act = activation.lower()
     if act == "sigmoid":
@@ -141,9 +129,10 @@ def softmax(z):
     exp_z = np.exp(z_shift)
     return exp_z / np.sum(exp_z, axis=1, keepdims=True)
 
-# =========================================================
-# 5. Forward Pass (Vectorized over Batch)
-# =========================================================
+
+# Forward Pass
+
+
 def forward_pass(X_batch, weights, biases, activation):
     h_vals = [X_batch]
     z_vals = []
@@ -158,9 +147,10 @@ def forward_pass(X_batch, weights, biases, activation):
     output = softmax(z_out)
     return z_vals, h_vals, output
 
-# =========================================================
-# 6. Backward Pass (Vectorized)
-# =========================================================
+
+# Backward Pass 
+
+
 def backward_pass(X_batch, y_batch, z_vals, h_vals, weights, biases, activation, loss="cross_entropy"):
     batch_size = X_batch.shape[0]
     num_classes = weights[-1].shape[0]
@@ -186,9 +176,10 @@ def backward_pass(X_batch, y_batch, z_vals, h_vals, weights, biases, activation,
         grads_b[i] = np.mean(delta, axis=0)
     return grads_w, grads_b
 
-# =========================================================
-# 7. Training and Evaluation (Vectorized)
-# =========================================================
+
+# Training and Evaluation
+
+
 def train_one_epoch(X_train, y_train, w, b, args, state):
     indices = np.arange(len(X_train))
     np.random.shuffle(indices)
@@ -238,14 +229,13 @@ def evaluate_accuracy(X, y, w, b, activation):
         correct += np.sum(preds == y[start:end])
     return correct / len(X)
 
-# =========================================================
-# 8. Confusion Matrix Functions
-# =========================================================
+#Confusion Matrix Functions
+
+# An interactive Plotly confusion matrix with a light color scale 
+# for improved text visibility.
+    
 def build_confusion_matrix(X, y, w, b, activation, class_names=None):
-    """
-    An interactive Plotly confusion matrix with a light color scale 
-    for improved text visibility.
-    """
+    
     class_names = [
         "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat", 
         "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"
@@ -300,10 +290,10 @@ def build_confusion_matrix(X, y, w, b, activation, class_names=None):
     )
     return fig
 
+# For a static (normal) confusion matrix using Matplotlib and returns a confusion matrix figure.
+
 def build_normal_confusion_matrix(X, y, w, b, activation, class_names=None):
-    """
-    For a static (normal) confusion matrix using Matplotlib and returns a confusion matrix figure.
-    """
+    
     if class_names is None:
         class_names = [
             "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat", 
@@ -334,9 +324,8 @@ def build_normal_confusion_matrix(X, y, w, b, activation, class_names=None):
     fig.tight_layout()
     return fig
 
-# =========================================================
-# 9. Main Training Function
-# =========================================================
+# Main Training Function
+
 def main():
     args = parse_args()
     wandb.init(project=args.wandb_project, entity=args.wandb_entity, config=vars(args))
@@ -401,9 +390,9 @@ def main():
     print(f"Final Test Accuracy = {final_test_acc*100:.2f}%", flush=True)
     wandb.finish()
 
-# =========================================================
+
 # Sweep Configuration
-# =========================================================
+
 sweep_config = {
     "name": "CS24M007_cross_entropy_fashion_mnist",
     "method": "bayes",
@@ -422,9 +411,8 @@ sweep_config = {
     }
 }
 
-# =========================================================
-# Main Entry Point
-# =========================================================
+# Main function
+
 if __name__ == "__main__":
     args = parse_args()
     if args.sweep:
