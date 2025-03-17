@@ -47,6 +47,8 @@ The assignment uses two popular datasets from the `keras.datasets` module:
 
 The datasets are normalized (pixel values scaled to [0, 1]) and the training data is split into training, validation, and test sets (commonly an 80/10/10 split).
 
+## Implementation Details
+
 ### Structure
 
 The repository is organized into two main modules, each addressing a specific functionality:
