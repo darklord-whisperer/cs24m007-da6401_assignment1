@@ -217,6 +217,13 @@ python train.py \
     --hidden_size 128 \
     --activation ReLU
 ```
+
+OR
+
+```python
+python train.py -e 10 -o nadam -a tanh -b 64 -nhl 3 -lr 0.001 -nhl 3 --w_d 0.0005 --w_i Xavier -sz 128 -beta 0.5 -beta1 0.5 -beta2 0.5 -eps 0.000001 -m 0.5 -w_i Xavier
+```
+
 ## Customization for Optimization function
 
 If you wish to add a new optimization algorithm, you can do so easily in optimizer_functions.py. A new function is already created for the user to add their own optimizer function. This is extremely flexible and easy to use – you only need to add your logic in Python and place it in the function body shown below:
