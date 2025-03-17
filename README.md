@@ -156,7 +156,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-### Running Manually
+### Running Manually (Will run default hyperparameters which stores the best hyperparameters)
 
 ```bash
 python train.py --wandb_project Your_Project_Name --wandb_entity Your_Entity_Name
@@ -220,7 +220,7 @@ python train.py \
     --activation ReLU
 ```
 
-OR
+OR for example like this (P.S.: The parameters below are just random hyperparameters, best parameters are present in default itself:
 
 ```python
 python train.py -e 10 -o nadam -a tanh -b 64 -nhl 3 -lr 0.001 -nhl 3 --w_d 0.0005 --w_i Xavier -sz 128 -beta 0.5 -beta1 0.5 -beta2 0.5 -eps 0.000001 -m 0.5 -w_i Xavier
