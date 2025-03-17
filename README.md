@@ -35,6 +35,7 @@ The primary task is to implement a FeedForward Neural Network (FFNN) from scratc
 
 ## Submission
 
+- **Github Repolink:** https://github.com/darklord-whisperer/cs24m007-da6401_assignment1/edit/main
 - **WandB Project:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/
 - **WandB Report:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/reports/DA-6401-Assignment-1-by-CS24M007-Alik-Sarkar--VmlldzoxMTcxOTUzMA?accessToken=ghybipxdmdstcq2fi5wfi6tmmqubmweohe19zyqej9k6mkx3wu9a4slrraoc9twr
 
