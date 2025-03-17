@@ -139,6 +139,8 @@ matplotlib==3.4.2
 
 keras==2.7.0
 
+plotly
+
 ## Installation:
 
 ### Clone the Repository
