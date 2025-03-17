@@ -35,8 +35,8 @@ The primary task is to implement a FeedForward Neural Network (FFNN) from scratc
 
 ## Submission
 
-- **WandB Project:** [Your WandB Project Link]
-- **WandB Report:** [Your WandB Report Link]
+- **WandB Project:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/
+- **WandB Report:** https://wandb.ai/cs24m007-iit-madras/Alik_Final_DA6401_DeepLearning_Assignment1/reports/DA-6401-Assignment-1-by-CS24M007
 
 ## Dataset
 
