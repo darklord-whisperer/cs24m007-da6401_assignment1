@@ -151,15 +151,20 @@ cd your-repo-name
 
 
 ### Install the Dependencies
-``` bash 
+``` python 
 pip install -r requirements.txt
 ```
 
 ## Usage
 ### Running Manually (Will run default hyperparameters which stores the best hyperparameters)
 
-```bash
+```python
 python train.py --wandb_project Your_Project_Name --wandb_entity Your_Entity_Name
+```
+### Running Question 1:
+
+```python
+python Question_1.py
 ```
 
 #### Cross-Entropy Loss Version:
@@ -167,7 +172,7 @@ python train.py --wandb_project Your_Project_Name --wandb_entity Your_Entity_Nam
 
 ## Running a Sweep using WandB
 
-  ```bash
+  ```python
   python train.py --sweep --wandb_project Your_Project_Name --wandb_entity Your_Entity_Name
 ```
 
@@ -198,7 +203,7 @@ The following command-line options allow you to customize the training process:
 | `--sweep`                | Run a hyperparameter sweep instead of a single training run |
 
   
-```bash
+```python
 python train.py \
     --wandb_project Your_Project_Name \
     --wandb_entity Your_Entity_Name \
@@ -220,7 +225,7 @@ python train.py \
     --activation ReLU
 ```
 
-OR for example like this (P.S.: The parameters below are just random hyperparameters, best parameters are present in default itself:
+OR for example like this (P.S.: The parameters below are just random hyperparameters, best parameters are present in default itself):
 
 ```python
 python train.py -e 10 -o nadam -a tanh -b 64 -nhl 3 -lr 0.001 -nhl 3 --w_d 0.0005 --w_i Xavier -sz 128 -beta 0.5 -beta1 0.5 -beta2 0.5 -eps 0.000001 -m 0.5 -w_i Xavier
